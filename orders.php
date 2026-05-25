@@ -1,12 +1,17 @@
 <?php
-
 header("Content-Type: application/json");
 
-include "db.php";
+$conn = mysqli_connect("localhost", "root", "", "coffee_shop_db");
 
-$sql = "SELECT * FROM orders ORDER BY id DESC";
+if (!$conn) {
+    die(json_encode([
+        "success" => false,
+        "message" => "Database connection failed"
+    ]));
+}
 
-$result = mysqli_query($conn, $sql);
+$query = "SELECT * FROM orders ORDER BY id DESC";
+$result = mysqli_query($conn, $query);
 
 $orders = [];
 
@@ -15,5 +20,4 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 echo json_encode($orders);
-
 ?>
